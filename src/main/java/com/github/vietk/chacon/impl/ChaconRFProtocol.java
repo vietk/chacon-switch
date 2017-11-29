@@ -3,11 +3,15 @@ package com.github.vietk.chacon.impl;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.wiringpi.Gpio;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created on 05/02/2017.
  */
 public class ChaconRFProtocol {
 
+    private Logger logger = Logger.getLogger(ChaconRFProtocol.class.getName());
 
     private final GpioPinDigitalOutput pin;
 
@@ -34,6 +38,9 @@ public class ChaconRFProtocol {
     }
 
     public void transmit(String command) {
+
+        logger.fine("Transmitting " + command + " on " + pin.getName());
+
         transmitOnce(command);
         delayMicroseconds(10);
         transmitOnce(command);
@@ -44,6 +51,8 @@ public class ChaconRFProtocol {
         delayMicroseconds(10);
         transmitOnce(command);
         delayMicroseconds(10);
+
+        logger.fine("End transmission");
     }
 
     public void transmitOnce(String command) {
@@ -81,5 +90,4 @@ public class ChaconRFProtocol {
     private boolean withBoolean(int c) {
         return ((char) c) == '1'?true:false;
     }
-
 }
