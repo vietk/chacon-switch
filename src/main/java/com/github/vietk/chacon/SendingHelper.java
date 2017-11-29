@@ -4,6 +4,8 @@ import com.github.vietk.chacon.forkjoinpool.SwitchImpl;
 import com.github.vietk.chacon.impl.ChaconRFProtocol;
 import com.pi4j.io.gpio.*;
 
+import java.util.concurrent.CompletableFuture;
+
 public class SendingHelper {
 
     private SendingHelper() {
@@ -16,11 +18,14 @@ public class SendingHelper {
                 RaspiPin.getPinByName(gpio), "RadioTransmission", PinState.LOW);
         ChaconRFProtocol protocol = new ChaconRFProtocol(pin);
         Switch zwitch = new SwitchImpl(protocol, deviceId, emitterId);
+
+        CompletableFuture<Void> future;
         if (state.equals("on")) {
-            zwitch.on();
+            future = zwitch.on();
         } else {
-            zwitch.off();
+            future = zwitch.off();
         }
+        future.join();
         pin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
     }
 }
