@@ -37,6 +37,8 @@ public class WebServer extends AbstractVerticle {
             else {
                 zwitch.off();
             }
+
+            routingContext.response().setStatusCode(200).end();
         });
         server.requestHandler(router::accept).listen(80);
     }
