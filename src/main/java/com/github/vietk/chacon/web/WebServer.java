@@ -25,7 +25,7 @@ public class WebServer extends AbstractVerticle {
 
         HttpServer server = vertx.createHttpServer();
         Router router = Router.router(vertx);
-        Route route = router.route(HttpMethod.POST, "/switch/:deviceId/:state");
+        Route route = router.route(HttpMethod.GET, "/switch/:deviceId/:state");
         route.blockingHandler(routingContext -> {
             Integer deviceId = Integer.parseInt(routingContext.request().getParam("deviceId"));
             String state = routingContext.request().getParam("state");
